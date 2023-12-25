@@ -13,11 +13,21 @@ def get_rgb():
         return get_rgb()
 
 
+def get_border_size():
+    try:
+        border_size = int(input("Enter border size (in pixels): "))
+        return border_size
+    except ValueError:
+        print("Invalid input")
+        return get_border_size()
+
+
 def main():
     user_img_path = filedialog.askopenfilename()
     user_img = Image.open(user_img_path)
     border_colour = get_rgb()
-    user_img_border = ImageOps.expand(user_img, border=20, fill=tuple(border_colour))
+    border_size = get_border_size()
+    user_img_border = ImageOps.expand(user_img, border=border_size, fill=tuple(border_colour))
     user_img_border.show()
 
 
