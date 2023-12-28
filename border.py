@@ -5,6 +5,7 @@ import sys
 from PIL import Image, ImageOps
 from tkinter import filedialog
 
+
 def random_border():
     rgb = [None] * 3
     for i in range(3):
@@ -41,15 +42,30 @@ def main():
     except AttributeError:
         sys.exit()
 
-    border_bool = input("Do you want a random border (y/n)?")
-    if border_bool.lower() == "y":
-        border_colour = random_border()
-        border_size = random.randrange(20)
-        print(border_colour)
-    elif border_bool.lower() == "n":
-        border_colour = get_rgb()
-        border_size = get_border_size()
-        print(border_colour)
+    while True:
+        border_colour_bool = input("Do you want a random border colour (y/n)?")
+        if border_colour_bool.lower() in ["y", "yes"]:
+            border_colour = random_border()
+            break
+        elif border_colour_bool.lower() in ["n", "no"]:
+            border_colour = get_rgb()
+            break
+        else:
+            print("Please enter only y or n")
+            continue
+
+    while True:
+        border_size_bool = input("Do you want a random border size (y/n)?")
+        if border_size_bool.lower() in ["y", "yes"]:
+            border_size = random.randrange(20)
+            break
+        elif border_size_bool.lower() in ["n", "no"]:
+            border_size = get_border_size()
+            break
+        else:
+            print("Please enter only y or n")
+            continue
+
     user_img_border = ImageOps.expand(user_img, border=border_size, fill=tuple(border_colour))
     user_img_border.show()
 
