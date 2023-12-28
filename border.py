@@ -42,11 +42,11 @@ def main():
         sys.exit()
 
     border_bool = input("Do you want a random border (y/n)?")
-    if border_bool == "y":
+    if border_bool.lower() == "y":
         border_colour = random_border()
         border_size = random.randrange(20)
         print(border_colour)
-    elif border_bool == "n":
+    elif border_bool.lower() == "n":
         border_colour = get_rgb()
         border_size = get_border_size()
         print(border_colour)
