@@ -10,7 +10,6 @@ def random_border():
     rgb = [None] * 3
     for i in range(3):
         rgb[i] = random.randrange(256)
-        print(rgb[i])
     return rgb
 
 
@@ -34,14 +33,25 @@ def get_border_size():
         return get_border_size()
 
 
+# Save as image as argument
+def save_new_image(final_image):
+    image = filedialog.asksaveasfilename(defaultextension=".png")
+    if image:
+        saved_final = final_image
+        saved_final.save(image)
+
+
+
 def main():
     user_img_path = filedialog.askopenfilename()
 
+    # To fix, prevent user from uploading non-image instead of using exception
     try:
         user_img = Image.open(user_img_path)
-    except AttributeError:
+    except Exception:
         sys.exit()
 
+    # Loops questions until valid input
     while True:
         border_colour_bool = input("Do you want a random border colour (y/n)?")
         if border_colour_bool.lower() in ["y", "yes"]:
@@ -66,9 +76,20 @@ def main():
             print("Please enter only y or n")
             continue
 
+    # Modify the image
     user_img_border = ImageOps.expand(user_img, border=border_size, fill=tuple(border_colour))
     user_img_border.show()
 
+    while True:
+        save_bool = input("Do you want to save the image (y/n)?")
+        if save_bool.lower() in ["y", "yes"]:
+            save_new_image(user_img_border)
+            break
+        elif save_bool.lower() in ["n", "no"]:
+            break
+        else:
+            print("Please enter only y or n")
+            continue
 
 if __name__ == "__main__":
     main()
