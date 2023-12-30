@@ -1,15 +1,14 @@
-import logging
 import random
 import sys
-
+from modern_colorthief import ColorThief
 from PIL import Image, ImageOps
 from tkinter import filedialog
 
 
 def random_border():
     rgb = [None] * 3
-    for i in range(3):
-        rgb[i] = random.randrange(256)
+    for i in range(3):  # Loops thrice for red, green, and blue values in that order
+        rgb[i] = random.randrange(256)  # 0-255 limit due to RGB cap
     return rgb
 
 
@@ -34,6 +33,7 @@ def get_border_size():
 
 
 # Save as image as argument
+# TODO: Add image file type option, as .png is the current default
 def save_new_image(final_image):
     image = filedialog.asksaveasfilename(defaultextension=".png")
     if image:
@@ -53,11 +53,11 @@ def main():
 
     # Loops questions until valid input
     while True:
-        border_colour_bool = input("Do you want a random border colour (y/n)?")
-        if border_colour_bool.lower() in ["y", "yes"]:
-            border_colour = random_border()
+        border_colour_bool = input("Do you want a dominant colour border (y/n)?")
+        if border_colour_bool.lower().strip() in ["y", "yes"]:
+            border_colour = ColorThief(user_img_path).get_color()
             break
-        elif border_colour_bool.lower() in ["n", "no"]:
+        elif border_colour_bool.lower().strip() in ["n", "no"]:
             border_colour = get_rgb()
             break
         else:
@@ -66,17 +66,17 @@ def main():
 
     while True:
         border_size_bool = input("Do you want a random border size (y/n)?")
-        if border_size_bool.lower() in ["y", "yes"]:
+        if border_size_bool.lower().strip() in ["y", "yes"]:
             border_size = random.randrange(20)
             break
-        elif border_size_bool.lower() in ["n", "no"]:
+        elif border_size_bool.lower().strip() in ["n", "no"]:
             border_size = get_border_size()
             break
         else:
             print("Please enter only y or n")
             continue
 
-    # Modify the image
+    # Modify and preview the image
     user_img_border = ImageOps.expand(user_img, border=border_size, fill=tuple(border_colour))
     user_img_border.show()
 
