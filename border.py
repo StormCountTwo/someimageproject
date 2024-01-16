@@ -6,10 +6,7 @@ from tkinter import filedialog
 
 
 def random_border():
-    rgb = [None] * 3
-    for i in range(3):  # Loops thrice for red, green, and blue values in that order
-        rgb[i] = random.randrange(256)  # 0-255 limit due to RGB cap
-    return rgb
+    return list(map(lambda x: random.randrange(256), range(3)))
 
 
 def get_rgb():
@@ -35,11 +32,11 @@ def get_border_size():
 # Save as image as argument
 # TODO: Add image file type option, as .png is the current default
 def save_new_image(final_image):
-    image = filedialog.asksaveasfilename(defaultextension=".png")
+    extension = "png"
+    image = filedialog.asksaveasfilename(defaultextension="."+extension)
     if image:
         saved_final = final_image
         saved_final.save(image)
-
 
 
 def main():
@@ -82,14 +79,15 @@ def main():
 
     while True:
         save_bool = input("Do you want to save the image (y/n)?")
-        if save_bool.lower() in ["y", "yes"]:
+        if save_bool.lower().strip() in ["y", "yes"]:
             save_new_image(user_img_border)
             break
-        elif save_bool.lower() in ["n", "no"]:
+        elif save_bool.lower().strip() in ["n", "no"]:
             break
         else:
             print("Please enter only y or n")
             continue
+
 
 if __name__ == "__main__":
     main()
