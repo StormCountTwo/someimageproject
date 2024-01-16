@@ -5,6 +5,20 @@ from PIL import Image, ImageOps
 from tkinter import filedialog
 
 
+def yes_or_no(question):
+    while True:
+        y_or_n = input(f"{question} (y/n)? ")
+        if y_or_n.lower().strip() in ["y", "yes"]:
+            answer = True
+            break
+        elif y_or_n.lower().strip() in ["n", "no"]:
+            answer = False
+            break
+        else:
+            print("Invalid input")
+    return answer
+
+
 def random_border():
     return list(map(lambda x: random.randrange(256), range(3)))
 
@@ -49,44 +63,21 @@ def main():
         sys.exit()
 
     # Loops questions until valid input
-    while True:
-        border_colour_bool = input("Do you want a dominant colour border (y/n)?")
-        if border_colour_bool.lower().strip() in ["y", "yes"]:
-            border_colour = ColorThief(user_img_path).get_color()
-            break
-        elif border_colour_bool.lower().strip() in ["n", "no"]:
-            border_colour = get_rgb()
-            break
-        else:
-            print("Please enter only y or n")
-            continue
+    if yes_or_no("Do you want a dominant colour border "):
+        border_colour = ColorThief(user_img_path).get_color()
+    else:
+        border_colour = get_rgb()
 
-    while True:
-        border_size_bool = input("Do you want a random border size (y/n)?")
-        if border_size_bool.lower().strip() in ["y", "yes"]:
-            border_size = random.randrange(20)
-            break
-        elif border_size_bool.lower().strip() in ["n", "no"]:
-            border_size = get_border_size()
-            break
-        else:
-            print("Please enter only y or n")
-            continue
+    if yes_or_no("Do you want a random border size "):
+        border_size = random.randrange(20)
+    else:
+        border_size = get_border_size()
 
     # Modify and preview the image
     user_img_border = ImageOps.expand(user_img, border=border_size, fill=tuple(border_colour))
     user_img_border.show()
-
-    while True:
-        save_bool = input("Do you want to save the image (y/n)?")
-        if save_bool.lower().strip() in ["y", "yes"]:
-            save_new_image(user_img_border)
-            break
-        elif save_bool.lower().strip() in ["n", "no"]:
-            break
-        else:
-            print("Please enter only y or n")
-            continue
+    if yes_or_no("Do you want to save the image "):
+        save_new_image(user_img_border)
 
 
 if __name__ == "__main__":
